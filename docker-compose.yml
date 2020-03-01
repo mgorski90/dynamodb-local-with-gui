@@ -1,0 +1,24 @@
+version: '3.6'
+services:
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin:latest
+    ports:
+      - "8001:8001"
+    environment:
+      - DYNAMO_ENDPOINT=192.168.55.4:8000
+    networks:
+      dynamodb-local-backend:
+        ipv4_address: "192.168.55.3"
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    ports:
+      - "8000:8000"
+    networks:
+      dynamodb-local-backend:
+        ipv4_address: "192.168.55.4"
+networks:
+  dynamodb-local-backend:
+    driver: "bridge"
+    ipam:
+      config:
+        - subnet: "192.168.55.0/24"
